@@ -24,7 +24,7 @@ export default class App extends Component {
 
   componentDidMount() {
     // start a timer for the clock:
-    this.timer = setInterval(this.updateTime, 5000);
+    this.timer = setInterval(this.updateTime, 1000);
   }
 
   componentWillUnmount() {
@@ -36,7 +36,8 @@ export default class App extends Component {
       return null;
     }
     const watchRows = this.state.watchPages.map((wp, ix) => {
-      return <WatchItem ix={ix} url={wp.url} checks={wp.checks} />;
+      return <WatchItem ix={ix} url={wp.url} checks={wp.checks}
+                        checkInterval={this.state.checkInterval} />;
     });
     return (
       <table>
