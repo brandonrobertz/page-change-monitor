@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 
 import Header from './header';
 import AddWatch from './addWatch';
+import WatchItem from './watchItem';
 
 import style from './style';
 
@@ -35,16 +36,7 @@ export default class App extends Component {
       return null;
     }
     const watchRows = this.state.watchPages.map((wp, ix) => {
-      console.log("ix", ix, "wp", wp);
-      return (
-        <tr>
-          <td>{ ix }</td>
-          <td>{ wp.url }</td>
-          <td>{ wp.lastChecked || 'Never' }</td>
-          <td>{ wp.status }</td>
-          <td>{ wp.errors }</td>
-        </tr>
-      );
+      return <WatchItem ix={ix} url={wp.url} checks={wp.checks} />;
     });
     return (
       <table>
@@ -52,9 +44,9 @@ export default class App extends Component {
           <tr>
             <th>&nbsp;</th>
             <th>URL</th>
-            <th>Last check</th>
+            <th>Checks</th>
             <th>Status</th>
-            <th>Errors</th>
+            <th>Last checked</th>
           </tr>
         </thead>
         <tbody>
@@ -104,7 +96,6 @@ export default class App extends Component {
   // Note: `user` comes from the URL, courtesy of our router
   render = () => {
     const { watchPages, time, lastCheck, checkInterval} = this.state;
-    console.log("watchPages", watchPages);
     return (
       <div id="app">
         <Header />
