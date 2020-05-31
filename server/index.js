@@ -1,0 +1,88 @@
+const express = require('express');
+const axios = require('axios');
+const cheerio = require('cheerio');
+
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send({
+    hello: 'The pagemon server is running!'
+  });
+});
+
+const clean = (val) => {
+  return val.replace(/[\n\r]/g, "").replace(/\s+/g, " ")
+};
+
+const compareEls = (changed, prevEls, newEls, $_prev, $_new) => {
+  prevEls.each((ix, prevNode) => {
+    const newNode = newEls[ix.toString()];
+    const newOuter = clean($_new.html(newNode));
+    const prevOuter = clean($_prev.html(prevNode));
+    if (newOuter !== prevOuter) changed = true;
+  });
+};
+
+const performChangeChecks = (checks, prevData, newData) => {
+  let changed = false;
+  const $_prev = cheerio.load(prevData);
+  const $_new = cheerio.load(newData);
+  checks.forEach((check) => {
+    if (check === "strictEq") {
+      if (prevData !== newData) changed = true;
+    } else {
+      const prevEls = $_prev(check) || [];
+      const newEls = $_new(check) || [];
+      if (prevEls.length !== newEls.length) {
+        changed = true;
+        return
+      }
+      compareEls(changed, prevEls, newEls, $_prev, $_new);
+    }
+  });
+  return changed;
+};
+
+app.post('/check-page', (req, res) => {
+  // URL to check
+  const url = req.body.url;
+  // whether or not this is our initial load (just return page data)
+  const isInit = req.body.isInit === undefined ? false : req.body.isInit;
+  // last known page HTML/response body data
+  const pageData = req.body.pageData;
+  // list of checks to perform. array of strings, can
+  // be one or more of: "strictEq", cssSelector
+  const checks = req.body.checks || ["strictEq"];
+
+  axios.get(req.body.url)
+    .then((response) => {
+      if (isInit) {
+        res.send({
+          result: "success",
+          changed: false, 
+          pageData: response.data,
+        });
+      } else {
+        const changed = performChangeChecks(checks, pageData, response.data);
+        res.send({
+          result: "success",
+          changed: changed, 
+          pageData: response.data,
+        });
+      }
+    })
+    .catch((error) => {
+      console.error("error", error);
+      res.send({
+        result: "failure",
+        // don't mark failures as changed
+        changed: false, 
+        error: error.message,
+      });
+    });
+});
+
+app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
