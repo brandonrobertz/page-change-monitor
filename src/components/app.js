@@ -3,27 +3,20 @@ import { h, Component } from 'preact';
 import Header from './header';
 import AddWatch from './addWatch';
 import WatchItem from './watchItem';
+import Interval from './interval';
 
 import style from './style';
 
 export default class App extends Component {
   state = {
-    watchPages: [{
-      url: "https://bxroberts.org",
-      checks: ["staticEq"],
-    },{
-      url: "https://bxroberts.org/bio",
-      checks: ["staticEq"],
-    },{
-      url: "https://bxroberts.org/bio",
-      checks: ["footer"],
-    }],
+    watchPages: [],
     time: Date.now(),
     checkInterval: 10,
     newUrl: '',
     newCheckExact: false,
     newCheckCSSShow: false,
     newCheckSelector: '',
+    showAddWatch: false,
   };
 
   // update the current time
@@ -52,7 +45,6 @@ export default class App extends Component {
       <table>
         <thead>
           <tr>
-            <th>&nbsp;</th>
             <th>URL</th>
             <th>Checks</th>
             <th>Changed?</th>
@@ -77,6 +69,12 @@ export default class App extends Component {
   updateCheck = (event) => {
     this.setState({
       [event.target.id]: event.target.checked,
+    });
+  }
+
+  onIntervalChange = (interval) => {
+    this.setState({
+      checkInterval: interval
     });
   }
 
@@ -105,20 +103,37 @@ export default class App extends Component {
     });
   }
 
+  toggleWatchAdd = () => {
+    this.setState({
+      showAddWatch: !this.state.showAddWatch
+    });
+  }
+
+  renderAddWatch() {
+    if (this.state.showAddWatch) {
+      return (<div class={style.watchWrap}>
+        <AddWatch watchAdded={this.watchAdded} onCancel={this.toggleWatchAdd} />
+      </div>);
+    }
+    return (<div class={style.watchWrap} style={{"text-align": "center"}}>
+      <button style={style.addWatch} onClick={this.toggleWatchAdd}>+ Add page</button>
+    </div>);
+  }
+
   render = () => {
     const { watchPages, time, lastCheck, checkInterval} = this.state;
     return (
       <div id="app">
         <div class={style.header}>
-          <span>Brandon's Page Watcher</span>
-          <span>Current time: {new Date(time).toLocaleString()}</span>
-          <span>Check interval: { checkInterval } seconds</span>
+          <span class={style.headSection}>Brandon's Page Change Detector</span>
+          <span class={style.headSection}>Current time: <b>{new Date(time).toLocaleString()}</b></span>
+          <span class={style.headSection}>
+            <Interval interval={checkInterval} onSave={this.onIntervalChange} />
+          </span>
         </div>
         <div class={style.main}>
-          <div>
-            { this.renderWatchList() }
-          </div>
-          <AddWatch watchAdded={this.watchAdded} />
+          { this.renderWatchList() }
+          { this.renderAddWatch() }
         </div>
       </div>
     );

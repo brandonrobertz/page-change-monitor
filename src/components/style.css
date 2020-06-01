@@ -3,10 +3,33 @@
   font-family: monospace;
 }
 
+#app button, .main button, .header button {
+  border: 1px solid #aaaaaa;
+  background-color: white;
+  color: #333333;
+  margin: 2px 5px;
+}
+#app button:hover,
+.main button:hover,
+.header button:hover {
+  background-color: #efefef;
+  cursor: pointer;
+}
+
+.watchWrap {
+  margin: 20px auto;
+  max-width: 500px;
+}
+
 .header {
   text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
 }
 .header span {
+  padding: 5px 2px;
+}
+span.headSection {
   padding: 5px 20px;
 }
 

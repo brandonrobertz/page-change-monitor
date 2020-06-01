@@ -1,5 +1,7 @@
 import { h, Component } from 'preact';
 
+import style from './style';
+
 export default class AddWatch extends Component {
   state = {
     newUrl: '',
@@ -59,12 +61,24 @@ export default class AddWatch extends Component {
   render = () => {
     return (
       <div>
+        <p>
+        Enter a URL and a page change detection method below.
+        </p>
         <div>
           <label forName="newUrl">URL: </label>
           <input id="newUrl" type="text" onInput={this.updateInput}
+                 class={style.watchUrl}
                  value={this.state.newUrl} />
         </div>
         <div>
+          <p>
+          <b>Page change detection methods:</b> "Exact HTML match" checks to
+          see if the HTML of each page is identical. "Compare specific elements"
+          takes a CSS Selector, pulls the matching elements from each page version
+          and checks to see if the HTML of all the elements are identical. Use
+          this one if the HTML has a timestamp that fools exact HTML page
+          change detection.
+          </p>
           <label forName="newCheckExact">
             <input id="newCheckExact" type="checkbox"
                    onChange={this.updateCheck}
@@ -83,11 +97,13 @@ export default class AddWatch extends Component {
             <span>
               <input id="newCheckSelector" type="text" onInput={this.updateInput}
                      placeholder="CSS Selector, e.g.: table"
+                     class={style.newCheckSelector}
                      value={this.state.newCheckSelector} />
             </span>
           )}
         </div>
-        <button disabled={this.isWatchInvalid()} onClick={this.addWatch}>Watch this page</button>
+        <button disabled={this.isWatchInvalid()} onClick={this.addWatch}>Add</button>
+        <button onClick={this.props.onCancel}>Cancel</button>
       </div>
     );
   }
