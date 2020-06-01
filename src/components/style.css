@@ -1,4 +1,18 @@
-.main {
+#app, .main, .header {
   color: black;
   font-family: monospace;
+}
+
+.header {
+  text-align: center;
+}
+.header span {
+  padding: 5px 20px;
+}
+
+table {
+  margin: 0 auto;
+}
+table td, table th {
+  padding: 5px 15px;
 }

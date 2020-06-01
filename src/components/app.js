@@ -8,9 +8,18 @@ import style from './style';
 
 export default class App extends Component {
   state = {
-    watchPages: [],
+    watchPages: [{
+      url: "https://bxroberts.org",
+      checks: ["staticEq"],
+    },{
+      url: "https://bxroberts.org/bio",
+      checks: ["staticEq"],
+    },{
+      url: "https://bxroberts.org/bio",
+      checks: ["footer"],
+    }],
     time: Date.now(),
-    checkInterval: 300,
+    checkInterval: 10,
     newUrl: '',
     newCheckExact: false,
     newCheckCSSShow: false,
@@ -46,8 +55,10 @@ export default class App extends Component {
             <th>&nbsp;</th>
             <th>URL</th>
             <th>Checks</th>
-            <th>Status</th>
+            <th>Changed?</th>
+            <th class="status">Last fetch status</th>
             <th>Last checked</th>
+            <th>&nbsp;</th>
           </tr>
         </thead>
         <tbody>
@@ -94,16 +105,19 @@ export default class App extends Component {
     });
   }
 
-  // Note: `user` comes from the URL, courtesy of our router
   render = () => {
     const { watchPages, time, lastCheck, checkInterval} = this.state;
     return (
       <div id="app">
-        <Header />
+        <div class={style.header}>
+          <span>Brandon's Page Watcher</span>
+          <span>Current time: {new Date(time).toLocaleString()}</span>
+          <span>Check interval: { checkInterval } seconds</span>
+        </div>
         <div class={style.main}>
-          <div>Current time: {new Date(time).toLocaleString()}</div>
-          <div>Check interval: { checkInterval } seconds</div>
-          { this.renderWatchList() }
+          <div>
+            { this.renderWatchList() }
+          </div>
           <AddWatch watchAdded={this.watchAdded} />
         </div>
       </div>

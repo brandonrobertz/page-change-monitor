@@ -1,0 +1,17 @@
+.watchItem {}
+.watchId {}
+.url {}
+.checks {}
+.changed {
+  min-width: 200px;
+  text-align: center;
+}
+.status {}
+.lastChecked {
+}
+.markSeen {
+}
+
+table th.status {
+  min-width: 200px;
+}

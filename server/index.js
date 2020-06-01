@@ -1,11 +1,20 @@
 const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const cors = require('cors');
+const crypto = require('crypto');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.get('/', (req, res) => {
   res.send({
@@ -17,13 +26,15 @@ const clean = (val) => {
   return val.replace(/[\n\r]/g, "").replace(/\s+/g, " ")
 };
 
-const compareEls = (changed, prevEls, newEls, $_prev, $_new) => {
+const compareEls = (prevEls, newEls, $_prev, $_new) => {
+  let changed = false;
   prevEls.each((ix, prevNode) => {
     const newNode = newEls[ix.toString()];
     const newOuter = clean($_new.html(newNode));
     const prevOuter = clean($_prev.html(prevNode));
     if (newOuter !== prevOuter) changed = true;
   });
+  return changed;
 };
 
 const performChangeChecks = (checks, prevData, newData) => {
@@ -40,7 +51,7 @@ const performChangeChecks = (checks, prevData, newData) => {
         changed = true;
         return
       }
-      compareEls(changed, prevEls, newEls, $_prev, $_new);
+      changed = compareEls(prevEls, newEls, $_prev, $_new);
     }
   });
   return changed;
@@ -59,11 +70,13 @@ app.post('/check-page', (req, res) => {
 
   axios.get(req.body.url)
     .then((response) => {
+      const hash = crypto.createHash('md5').update(response.data).digest('hex');
       if (isInit) {
         res.send({
           result: "success",
           changed: false, 
           pageData: response.data,
+          pageHash: hash,
         });
       } else {
         const changed = performChangeChecks(checks, pageData, response.data);
@@ -71,6 +84,7 @@ app.post('/check-page', (req, res) => {
           result: "success",
           changed: changed, 
           pageData: response.data,
+          pageHash: hash,
         });
       }
     })
@@ -83,6 +97,7 @@ app.post('/check-page', (req, res) => {
         error: error.message,
       });
     });
+
 });
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
