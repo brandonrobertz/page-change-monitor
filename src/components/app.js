@@ -4,12 +4,13 @@ import Header from './header';
 import AddWatch from './addWatch';
 import WatchItem from './watchItem';
 import Interval from './interval';
+import {loadFromStore, saveToStore} from '../storage';
 
 import style from './style';
 
 export default class App extends Component {
   state = {
-    watchPages: [],
+    watchPages: loadFromStore(),
     time: Date.now(),
     checkInterval: 10,
     newUrl: '',
@@ -98,8 +99,10 @@ export default class App extends Component {
   }
 
   watchAdded = (newWatch) => {
+    const watchPages = this.state.watchPages.concat(newWatch);
+    saveToStore(watchPages);
     this.setState({
-      watchPages: this.state.watchPages.concat(newWatch)
+      watchPages: watchPages
     });
   }
 
