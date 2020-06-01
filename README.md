@@ -6,9 +6,8 @@ There's a frontend (preact) and a backend (express). Quickstart (Node.js v12):
 
 ```
 npm install
-npm run dev
-# in another terminal
+npm run build
 npm run server
 ```
 
-The frontend will be available at `localhost:8080`.
+The frontend will be available at `localhost:3000`.
