@@ -132,7 +132,10 @@ export default class WatchItem extends Component {
         <td class={style.changed} style={{"background-color": this.state.changed ? 'yellow' : 'white'}}>{ this.getChanged() }</td>
         <td class={style.status}>{ this.getStatus() }</td>
         <td class={style.lastChecked}>{ this.getLastChecked() }</td>
-        <td class={style.markSeen}><button onClick={this.markSeen}>Reset</button></td>
+        <td class={style.markSeen}>
+          <button onClick={this.markSeen}>Reset</button>
+          <button onClick={this.props.removeWatch.bind(this, this.props.ix)}>Delete</button>
+        </td>
       </tr>
     );
   }

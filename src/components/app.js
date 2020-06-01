@@ -34,12 +34,30 @@ export default class App extends Component {
     clearInterval(this.timer);
   }
 
+  removeWatch = (ix) => {
+    let watchPages = this.state.watchPages.slice();
+    watchPages.splice(ix, 1);
+    saveToStore(watchPages);
+    this.setState({
+      watchPages: watchPages
+    });
+  }
+
+  watchAdded = (newWatch) => {
+    const watchPages = this.state.watchPages.concat(newWatch);
+    saveToStore(watchPages);
+    this.setState({
+      watchPages: watchPages
+    });
+  }
+
   renderWatchList() {
     if (!this.state.watchPages || !this.state.watchPages.length) {
       return null;
     }
     const watchRows = this.state.watchPages.map((wp, ix) => {
       return <WatchItem ix={ix} url={wp.url} checks={wp.checks}
+                        removeWatch={this.removeWatch}
                         checkInterval={this.state.checkInterval} />;
     });
     return (
@@ -90,20 +108,6 @@ export default class App extends Component {
     if (newCheckCSSShow && !newCheckSelector) return true;
     if (!newCheckExact && !newCheckSelector) return true;
     return false;
-  }
-
-  removeItem(array, action) {
-      let newArray = array.slice()
-      newArray.splice(action.index, 1)
-      return newArray
-  }
-
-  watchAdded = (newWatch) => {
-    const watchPages = this.state.watchPages.concat(newWatch);
-    saveToStore(watchPages);
-    this.setState({
-      watchPages: watchPages
-    });
   }
 
   toggleWatchAdd = () => {
