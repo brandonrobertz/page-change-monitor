@@ -1,9 +1,12 @@
 export const loadFromStore = () => {
-  const pages = localStorage.getItem("watchPages");
-  if (pages) {
-    return JSON.parse(pages);
+  try {
+    const pages = localStorage.getItem("watchPages");
+    if (pages) {
+      return JSON.parse(pages);
+    }
+  } catch(e) {
+    return [];
   }
-  return [];
 };
 
 export const saveToStore = (watchPages) => {
