@@ -3,13 +3,16 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const cors = require('cors');
 const crypto = require('crypto');
+const bodyParser = require('body-parser');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json());
 app.use(cors());
 app.use(express.static('build'))
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(express.json());
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
