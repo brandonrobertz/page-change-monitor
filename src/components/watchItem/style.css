@@ -1,6 +1,9 @@
 .watchItem {}
 .watchId {}
-.url {}
+.url {
+  overflow-wrap: anywhere;
+  max-width: 700px;
+}
 .checks {}
 .changed {
   min-width: 200px;

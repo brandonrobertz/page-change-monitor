@@ -64,6 +64,7 @@ const performChangeChecks = (checks, prevData, newData) => {
 app.post('/check-page', (req, res) => {
   // URL to check
   const url = req.body.url;
+  console.log(`Checking ${url}`);
   // whether or not this is our initial load (just return page data)
   const isInit = req.body.isInit === undefined ? false : req.body.isInit;
   // last known page HTML/response body data
