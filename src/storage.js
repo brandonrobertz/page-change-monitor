@@ -4,6 +4,7 @@ export const loadFromStore = () => {
     if (pages) {
       return JSON.parse(pages);
     }
+    return [];
   } catch(e) {
     return [];
   }
