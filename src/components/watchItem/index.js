@@ -78,6 +78,12 @@ export default class WatchItem extends Component {
     clearTimeout(this.timer);
   }
 
+  getUrl() {
+    return (
+      <a target="_blank" href={this.props.url}>{this.props.url}</a>
+    );
+  }
+
   getChecks() {
     return this.props.checks.map((c) => {
       if (c == "strictEq") {
@@ -127,7 +133,7 @@ export default class WatchItem extends Component {
   render() {
     return (
       <tr class={style.watchItem}>
-        <td class={style.url}>{ this.props.url }</td>
+        <td class={style.url}>{ this.getUrl() }</td>
         <td class={style.checks}>{ this.getChecks() }</td>
         <td class={style.changed} style={{"background-color": this.state.changed ? 'yellow' : 'white'}}>{ this.getChanged() }</td>
         <td class={style.status}>{ this.getStatus() }</td>

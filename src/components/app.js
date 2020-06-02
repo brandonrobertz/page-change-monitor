@@ -12,7 +12,7 @@ export default class App extends Component {
   state = {
     watchPages: loadFromStore(),
     time: Date.now(),
-    checkInterval: 10,
+    checkInterval: 60,
     newUrl: '',
     newCheckExact: false,
     newCheckCSSShow: false,
