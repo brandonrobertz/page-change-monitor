@@ -37,11 +37,9 @@ export default class WatchItem extends Component {
           initializing: false,
         };
         if (!this.state.pageData) {
-          console.log("Setting page data");
           nextState.pageData = response.data.pageData;
         }
         if (response.data.changed && !this.state.changed) {
-          console.log("Setting changed!");
           nextState.changed = true;
           nextState.changedAt = Date.now();
         }

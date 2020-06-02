@@ -35,7 +35,6 @@ export default class App extends Component {
   }
 
   removeWatch = (ix) => {
-    console.log("app.js removeWatch", ix);
     const watchPages = this.state.watchPages.slice();
     watchPages.splice(ix, 1);
     saveToStore(watchPages);
