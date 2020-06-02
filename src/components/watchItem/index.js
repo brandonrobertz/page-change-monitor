@@ -130,6 +130,10 @@ export default class WatchItem extends Component {
     });
   }
 
+  removeWatch = () => {
+    this.props.removeWatch(this.props.ix);
+  }
+
   render() {
     return (
       <tr class={style.watchItem}>
@@ -140,7 +144,7 @@ export default class WatchItem extends Component {
         <td class={style.lastChecked}>{ this.getLastChecked() }</td>
         <td class={style.markSeen}>
           <button onClick={this.markSeen}>Reset</button>
-          <button onClick={this.props.removeWatch.bind(this, this.props.ix)}>Delete</button>
+          <button onClick={this.removeWatch}>Delete</button>
         </td>
       </tr>
     );
