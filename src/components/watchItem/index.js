@@ -50,6 +50,7 @@ export default class WatchItem extends Component {
           lastResult: "failure",
           changed: false,
           error: error.message,
+          initializing: false,
         });
       })
       .finally(() => {
@@ -129,7 +130,7 @@ export default class WatchItem extends Component {
   }
 
   removeWatch = () => {
-    this.props.removeWatch(this.props.ix);
+    this.props.removeWatch(this.props.id);
   }
 
   render() {

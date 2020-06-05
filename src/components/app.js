@@ -34,9 +34,10 @@ export default class App extends Component {
     clearInterval(this.timer);
   }
 
-  removeWatch = (ix) => {
-    const watchPages = this.state.watchPages.slice();
-    watchPages.splice(ix, 1);
+  removeWatch = (id) => {
+    let watchPages = this.state.watchPages.slice().filter((w) => {
+      return w.id !== id
+    });
     saveToStore(watchPages);
     this.setState({
       watchPages: watchPages
@@ -47,7 +48,8 @@ export default class App extends Component {
     const watchPages = this.state.watchPages.concat(newWatch);
     saveToStore(watchPages);
     this.setState({
-      watchPages: watchPages
+      watchPages: watchPages,
+      showAddWatch: false,
     });
   }
 
@@ -55,8 +57,10 @@ export default class App extends Component {
     if (!this.state.watchPages || !this.state.watchPages.length) {
       return null;
     }
-    const watchRows = this.state.watchPages.map((wp, ix) => {
-      return <WatchItem ix={ix} url={wp.url} checks={wp.checks}
+    const watchRows = this.state.watchPages.map((wp) => {
+      return <WatchItem key={wp.id} id={wp.id}
+                        url={wp.url}
+                        checks={wp.checks}
                         removeWatch={this.removeWatch}
                         checkInterval={this.state.checkInterval} />;
     });

@@ -35,6 +35,10 @@ export default class AddWatch extends Component {
     return false;
   }
 
+  randId() {
+    return new Date().getTime();
+  }
+
   addWatch = (event) => {
     const checks = [];
     if (this.state.newCheckExact) {
@@ -44,6 +48,7 @@ export default class AddWatch extends Component {
       checks.push(this.state.newCheckSelector);
     }
     const newWatch = {
+      id: this.randId(),
       url: this.state.newUrl,
       checks: checks,
       changed: false,
