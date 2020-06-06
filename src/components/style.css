@@ -3,7 +3,9 @@
   font-family: monospace;
 }
 
-#app button, .main button, .header button {
+#app button,
+.main button,
+.header button {
   border: 1px solid #aaaaaa;
   background-color: white;
   color: #333333;
@@ -14,6 +16,12 @@
 .header button:hover {
   background-color: #efefef;
   cursor: pointer;
+}
+#app button:disabled,
+.main button:disabled,
+.header button:disabled {
+  background-color: #bbbbbb;
+  cursor: not-allowed;
 }
 
 .watchWrap {

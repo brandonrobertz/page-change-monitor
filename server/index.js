@@ -48,6 +48,8 @@ const performChangeChecks = (checks, prevData, newData) => {
   checks.forEach((check) => {
     if (check === "strictEq") {
       if (prevData !== newData) changed = true;
+    } else if (check === "pageText") {
+      if (clean($_prev().text()) !== clean($_new().text())) changed = true;
     } else {
       const prevEls = $_prev(check) || [];
       const newEls = $_new(check) || [];
@@ -70,7 +72,7 @@ app.post('/check-page', (req, res) => {
   // last known page HTML/response body data
   const pageData = req.body.pageData;
   // list of checks to perform. array of strings, can
-  // be one or more of: "strictEq", cssSelector
+  // be one or more of: "strictEq", "pageText", cssSelector
   const checks = req.body.checks || ["strictEq"];
 
   axios.get(req.body.url)
