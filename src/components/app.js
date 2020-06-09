@@ -5,6 +5,7 @@ import AddWatch from './addWatch';
 import WatchItem from './watchItem';
 import Interval from './interval';
 import {loadFromStore, saveToStore} from '../storage';
+import Notifier from './notification';
 
 import style from './style';
 
@@ -28,6 +29,10 @@ export default class App extends Component {
   componentDidMount() {
     // start a timer for the clock:
     this.timer = setInterval(this.updateTime, 1000);
+    this.notify = new Notifier();
+    if (!this.notify.hasPermission()) {
+      this.notify.requestPermission();
+    }
   }
 
   componentWillUnmount() {
@@ -53,6 +58,11 @@ export default class App extends Component {
     });
   }
 
+  onWatchChanged = (url) => {
+    const msg = `Change detected: ${url}`;
+    this.notify.sendNotification(msg);
+  }
+
   renderWatchList() {
     if (!this.state.watchPages || !this.state.watchPages.length) {
       return null;
@@ -62,6 +72,7 @@ export default class App extends Component {
                         url={wp.url}
                         checks={wp.checks}
                         removeWatch={this.removeWatch}
+                        onChange={this.onWatchChanged}
                         checkInterval={this.state.checkInterval} />;
     });
     return (
