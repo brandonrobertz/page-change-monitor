@@ -28,7 +28,6 @@ app.get('/', (req, res) => {
 
 const clean = (val) => {
   const txt = val.replace(/[\n\r]/g, "").replace(/\s+/g, " ")
-  console.log(txt);
   return txt;
 };
 
