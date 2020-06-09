@@ -27,7 +27,9 @@ app.get('/', (req, res) => {
 });
 
 const clean = (val) => {
-  return val.replace(/[\n\r]/g, "").replace(/\s+/g, " ")
+  const txt = val.replace(/[\n\r]/g, "").replace(/\s+/g, " ")
+  console.log(txt);
+  return txt;
 };
 
 const compareEls = (prevEls, newEls, $_prev, $_new) => {
@@ -49,7 +51,7 @@ const performChangeChecks = (checks, prevData, newData) => {
     if (check === "strictEq") {
       if (prevData !== newData) changed = true;
     } else if (check === "pageText") {
-      if (clean($_prev().text()) !== clean($_new().text())) changed = true;
+      if (clean($_prev.text()) !== clean($_new.text())) changed = true;
     } else {
       const prevEls = $_prev(check) || [];
       const newEls = $_new(check) || [];
