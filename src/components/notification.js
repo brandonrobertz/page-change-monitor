@@ -29,6 +29,10 @@ export default class Notifier {
         icon: '' //The URL of an image to be used as an icon
       }
     );
-    new Audio(`${api_host}/assets/bell.oga`).play();
+    try {
+      new Audio(`${api_host}/assets/bell.oga`).play();
+    } catch(e) {
+      console.error("Can't play notification sound. Error:", e);
+    }
   }
 }
