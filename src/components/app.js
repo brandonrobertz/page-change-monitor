@@ -58,9 +58,9 @@ export default class App extends Component {
     });
   }
 
-  onWatchChanged = (url) => {
+  onWatchChanged = (url, api_host) => {
     const msg = `Change detected: ${url}`;
-    this.notify.sendNotification(msg);
+    this.notify.sendNotification(msg, api_host);
   }
 
   renderWatchList() {

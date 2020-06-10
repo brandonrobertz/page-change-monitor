@@ -18,7 +18,7 @@ export default class Notifier {
     });
   }
 
-  sendNotification(bodyText) {
+  sendNotification(bodyText, api_host) {
     if (!this.hasPermission()) return;
     const note = new Notification(
       "A site changed!", {
@@ -29,5 +29,6 @@ export default class Notifier {
         icon: '' //The URL of an image to be used as an icon
       }
     );
+    new Audio(`${api_host}/assets/bell.oga`).play();
   }
 }

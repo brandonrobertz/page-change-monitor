@@ -44,7 +44,7 @@ export default class WatchItem extends Component {
           nextState.changedAt = Date.now();
           // callback for changed (do notification)
           if (this.props.onChange) {
-            this.props.onChange(this.props.url);
+            this.props.onChange(this.props.url, API_HOST);
           }
         }
         this.setState(nextState);
